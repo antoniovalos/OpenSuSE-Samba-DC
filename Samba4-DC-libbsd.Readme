@@ -1,0 +1,23 @@
+
+-------------samba 4.1 AD on opensuse RPI - STEP 05 : prepare depend samba - libbsd-------------------
+
+
+BuildRequires:  pkgconfig
+
+
+SAMBA code base a lot on BSD . 
+OpenSuSE  / SLES Linux do not provide all required functions to get i.e KRB MIT to work without this.
+At some Point an major rewrite of some BSD code may required - but why dublicate code that allready exist the OpenSource way.
+
+
+get libbsd.spec files at https://build.opensuse.org/package/show/KDE:Unstable:Frameworks/libbsd
+get latest libbsd tarball at http://libbsd.freedesktop.org/releases/
+
+
+copy libbsd.spec to /usr/src/packages/SPEC
+copy libbsd-0.6.0.tar.xz  
+
+rpmbuild -ba libbsd.spec
+
+install it after :
+rpm -i /usr/src/packages/RPMS/armv6hl/libbsd0-0.6.0-0.armv6hl.rpm
