@@ -1,0 +1,134 @@
+--------------------samba 4.1 AD on opensuse RPI - STEP 04 : rebuild BIND with DLZ --------------------------------------------- 
+
+
+BuildRequires:  krb5-devel
+BuildRequires:  libcap
+BuildRequires:  libcap-devel
+BuildRequires:  libmysqlclient-devel
+BuildRequires:  libtool
+BuildRequires:  libxml2-devel
+BuildRequires:  openldap2-devel
+BuildRequires:  openssl
+BuildRequires:  openssl-devel
+BuildRequires:  python-base
+BuildRequires:  update-desktop-files
+
+
+
+get opensuse BIND9 spec and srpm from : https://build.opensuse.org/package/show/openSUSE:Factory/bind
+get latest bind9.9.x source tar.gz  from www.isc.org  
+  BIND9 for samba  needs some more options , Required at least for samba 4.1.3 DLZ :
+  --with-dlopen=yes  --with-ecdsa 
+
+
+
+apply patch to /usr/src/packages/SPECS/bind.spec
+
+ad1:~/bind9  cat bind.spec.oss13.diff
+--- bind.spec   2013-12-28 12:16:39.409326072 +0000
++++ bind-9.9.4-P1.spec  2013-12-22 00:27:12.885504744 +0000
+@@ -18,7 +18,7 @@
+
+ Name:           bind
+ %define pkg_name bind
+-%define pkg_vers 9.9.3-P2
++%define pkg_vers 9.9.4-P1
+ BuildRequires:  krb5-devel
+ BuildRequires:  libcap
+ BuildRequires:  libcap-devel
+@@ -33,9 +33,9 @@
+ Summary:        Domain Name System (DNS) Server (named)
+ License:        ISC
+ Group:          Productivity/Networking/DNS/Servers
+-Version:        9.9.3P2
+-Release:        0
+-Provides:       bind8
++Version:        9.9.4P1
++Release:        oss13.1
++Provides:       named
+ Provides:       bind9
+ Provides:       dns_daemon
+ Obsoletes:      bind8
+@@ -59,7 +59,6 @@
+ Patch51:        pie_compile.diff
+ Patch52:        named-bootconf.diff
+ Patch100:       configure.in.diff2
+-Patch110:       workaround-compile-problem.diff
+ %if 0%{?suse_version} > 1220
+ BuildRequires:  gpg-offline
+ %endif
+@@ -67,7 +66,7 @@
+ # Rate limiting patch by Paul Vixie et.al. for reflection DoS protection
+ # see http://www.redbarn.org/dns/ratelimits
+ #Patch200:       http://ss.vix.su/~vjs/rpz2+rl-9.9.3-P1.patch
+-Patch200:       rpz2+rl-9.9.3-P1.patch
++#Patch200:       rpz2+rl-9.9.3-P1.patch
+
+ Source60:       dlz-schema.txt
+ %if %ul_version >= 1
+@@ -210,8 +209,8 @@
+ %if 0%{?suse_version} <= 1010
+ %patch100 -p1
+ %endif
+-%patch110 -p0
+-%patch200 -p0
++#%patch110 -p0
++#%patch200 -p0
+ # modify settings of some files regarding to OS version and vendor
+ function replaceStrings()
+ {
+@@ -267,10 +266,19 @@
+         --disable-static \
+        --with-openssl \
+        --enable-threads \
++       --with-gssapi=/usr/include/gssapi \
+        --with-libtool \
+        --enable-runidn \
+        --with-libxml2 \
+-       --with-dlz-mysql --with-dlz-ldap
++       --with-dlopen=yes \
++       --with-dlz-mysql \
++       --with-dlz-bdb \
++       --with-dlz-ldap  \
++       --enable-filter-aaaa \
++       --enable-rrl \
++       --with-ecdsa \
++       --disable-isc-spnego
++
+ "
+ cp -f -p config.guess config.sub contrib/idn/idnkit-1.0-src/
+ ./configure ${CONFIGURE_OPTIONS}
+
+
+rename specfile from bind.spec to bind-9.9.4-P1.spec
+
+
+BUILD Bind9:
+
+rpmbuild -ba /usr/src/packages/SPECS/bind-9.9.4-P1.spec
+
+
+
+install them :
+
+rpm --force -U  /usr/src/packages/RPMS/armv6hl/bind-9.9.4P1-0.armv6hl.rpm /usr/src/packages/RPMS/armv6hl/bind-chrootenv-9.9.4P1-0.armv6hl.rpm
+/usr/src/packages/RPMS/armv6hl/bind-devel-9.9.4P1-0.armv6hl.rpm /usr/src/packages/RPMS/armv6hl/bind-libs-9.9.4P1-0.armv6hl.rpm /usr/src/packages/RPMS/armv6hl/bind-lwresd-9.9.4P1-0.armv6hl.rpm
+/usr/src/packages/RPMS/armv6hl/bind-utils-9.9.4P1-0.armv6hl.rpm /usr/src/packages/RPMS/noarch/bind-doc-9.9.4P1-0.noarch.rpm
+
+
+
+
+after installed you have :
+
+
+ bastard$ #  rpm -qa | grep bind | egrep -v '(bindings|cerpc|yast2|winbind|rpcbind)'
+bind-lwresd-9.9.4P1-0.armv6hl
+bind-chrootenv-9.9.4P1-0.armv6hl
+bind-libs-9.9.4P1-0.armv6hl
+bind-devel-9.9.4P1-0.armv6hl
+bind-doc-9.9.4P1-0.noarch
+bind-9.9.4P1-0.armv6hl
+bind-utils-9.9.4P1-0.armv6hl
+
+
+
