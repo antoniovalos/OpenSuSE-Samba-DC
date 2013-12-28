@@ -1,0 +1,165 @@
+--- createNamedConfInclude.orig131.oss131       2013-12-21 13:43:00.000000000 +0000
++++ createNamedConfInclude      2013-12-28 10:42:44.848192296 +0000
+@@ -1,5 +1,6 @@
+ #!/bin/sh
+ #
++# Copyright (c) 1996-2002 SuSE Linux AG, Nuernberg, Germany.
+ # Copyright (c) 2003 SuSE Linux AG Nuernberg, Germany.
+ # All rights reserved.
+ #
+@@ -7,6 +8,7 @@
+ #
+
+
++MD5DIR="/var/adm/named-md5sum"
+ #
+ # check if we are started as root
+ # only one of UID and USER must be set correctly
+@@ -35,15 +37,6 @@
+        echo -e $1
+ }
+
+-#
+-# load special SuSEconfig functions
+-#
+-if [ ! -f "/lib/YaST/SuSEconfig.functions" ]; then
+-       errorMessage 'Can not find /lib/YaST/SuSEconfig.functions!\nThis should not happen.  Exiting.'
+-       exit 1
+-fi
+-MD5DIR="/var/adm/SuSEconfig/md5"
+-. /lib/YaST/SuSEconfig.functions
+
+ #
+ # check for named settings
+@@ -54,6 +47,83 @@
+ fi
+ . /etc/sysconfig/named
+
++#----------------------------------------------MD5DIR-FIXUP---begin---------------------------
++
++# re-written script orign code
++# This fixes the check_md5_and_move function included formerly from SuSeconfig.functions
++#
++
++if [ -e /etc/sysconfig/named ] && [ ! -d /var/adm/named/md5 ] &&  [ -z "$MD5DIR" ] && [ -x /usr/bin/md5sum ] && [ "${NAMED_RUN_CHROOTED}" = "yes" ]; then
++    echo "Warning from /usr/share/bind/createNamedConfInclude: "
++    echo "Named Chroot MD5sum config File Check stoppted due unconditional error"
++    echo " NAMED_RUN_CHROOTED not set at /etc/sysconfig/named or  md5sum not exist"
++    exit 1
++
++else
++       echo "Using MD5DIR=\"$MD5DIR\"..."
++       echo "Named Chroot MD5sum config include File Check running .."
++       mkdir -p $MD5DIR
++       chown named:named $MD5DIR
++fi
++
++
++check_md5_and_move() # Usage: check_md5_and_move file_name-without.NamedMD5sum
++{
++    # This function checks the existence of a file (specified without the
++    # extension .NamedMD5sum and without "$r") and a corresponding md5 checksum
++    # and tests whether the time stamp of the file has changed.
++    # If it has, nothing further will happen. If not, the "file.NamedMD5sum"
++    # will be moved to "file".
++
++    # Copyright (c) 1996-2002 SuSE Linux AG, Nuernberg, Germany.
++    # All rights reserved.
++    #
++    # Author: Burchard Steinbild, 1996-97
++    #         Florian La Roche, 1996
++    # Please send feedback to http://www.suse.de/feedback
++
++    FILE=$1
++    if test -n "$r" ; then
++        RELPATH=`echo $FILE | sed -e"s:^$r::"`
++    else
++        RELPATH=$FILE
++    fi
++    MD5FILE=$MD5DIR/$RELPATH
++    #
++    # make sure that the directory exists
++    mkdir -p `dirname $MD5FILE`
++    NEWMD5SUM="`cat $FILE.NamedMD5sum | grep -v "^#" | md5sum`"
++    if test ! -s $FILE ; then
++        touch $FILE
++        rm -f $MD5FILE
++    fi
++    if test "$FORCE_REPLACE" = true ; then
++        cp -p $FILE.NamedMD5sum $FILE
++    fi
++    USERMD5SUM="`cat $FILE | grep -v "^#" | md5sum`"
++    test -e $MD5FILE || echo "$USERMD5SUM" > $MD5FILE
++    OLDMD5SUM="`cat $MD5FILE`"
++    if test "$USERMD5SUM" != "$OLDMD5SUM" -a \
++            "$USERMD5SUM" != "$NEWMD5SUM" ; then
++        echo
++        echo "ATTENTION: You have modified $RELPATH.  Leaving it untouched..."
++        echo "You can find my version in $FILE.NamedMD5sum..."
++        echo
++    else
++        if test "$USERMD5SUM" != "$NEWMD5SUM" -o "$FORCE_REPLACE" = true ; then
++            echo "Installing new $RELPATH"
++            cp -p $FILE.NamedMD5sum $FILE
++        else
++            test "$VERBOSE" = false || echo "No changes for $RELPATH"
++        fi
++        rm -f $FILE.NamedMD5sum
++    fi
++    rm -f $MD5FILE
++    echo "$NEWMD5SUM" > $MD5FILE
++}
++
++#
++#----------------------------------------------MD5DIR-FIXUP---end---------------------------
+ # Check for NAMED_CONF_META_INCLUDE_FILE or set it to our default if we
+ # make use of this script.
+ if [ -z "${NAMED_CONF_META_INCLUDE_FILE}" ]; then
+@@ -68,7 +138,7 @@
+        test -z "${NAMED_CONF_META_INCLUDE_FILE}" && exit 0
+ fi
+
+-NEW_NAMEDCONFINCLUDE_FILE="${NAMED_CONF_META_INCLUDE_FILE}.SuSEconfig"
++NEW_NAMEDCONFINCLUDE_FILE="${NAMED_CONF_META_INCLUDE_FILE}.NamedMD5sum"
+ if [ -f "${NAMED_CONF_META_INCLUDE_FILE}" -a \
+        ! -f "${NEW_NAMEDCONFINCLUDE_FILE}" ]; then
+        touch "${NEW_NAMEDCONFINCLUDE_FILE}"
+@@ -119,6 +189,7 @@
+ eval "exec ${fd}<&-"
+
+ #
++
+ # only replace "${NAMED_CONF_META_INCLUDE_FILE}" if we need it
+ #
+ if [ "${includeUsed}" = 'yes' ]; then
+@@ -134,7 +205,31 @@
+ if [ "yes" = "${SET_PERMISSIONS}" ]; then
+        chown root:named "${NAMED_CONF_META_INCLUDE_FILE}"
+        chmod 0644 "${NAMED_CONF_META_INCLUDE_FILE}"
++else
++       echo "Warning SET_PERMISSIONS not set at /etc/sysconfig/named , using root"
++fi
++
++#
++# ----------------------------------NAMED_RUN_CHROOTED files & dir fix -- begin---------------------------------
++#
++# Fixup NAMED_RUN_CHROOTED file and dir rights.
++# slave, dyn , log at least  must be writable for named
++# they shuold be owned by the bind9 nameserver daemon
++
++if [ "yes" = "${SET_PERMISSIONS}" ] && [ "${NAMED_RUN_CHROOTED}" = "yes" ]; then
++        echo "using uid named , gid named for  NAMED_RUN_CHROOTED files and dirs  at /var/lib/named."
++        chown  named:named /var/lib/named
++       chown -R named:named /var/lib/named/master /var/lib/named/slave /var/lib/named/dyn  /var/lib/named/log
++        chmod 0755  /var/lib/named  /var/lib/named/slave /var/lib/named/dyn
++       chmod 0754 /var/lib/named/master
++else
++        echo "Warning!: SET_PERMISSIONS not been set to yes at /etc/sysconfig/named "
++        echo "using root for NAMED_RUN_CHROOTED files at below /var/lib/named "
+ fi
++#
++# ----------------------------------NAMED_RUN_CHROOTED files & dir fix -- end---------------------------------
++
++
+
+ exit 0
