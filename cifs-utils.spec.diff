@@ -1,0 +1,34 @@
+
+# had isstues not able to build latest cifs-utils 
+# symlink was not corrly relinked.
+# gpg verify not working.
+
+-- cifs-utils.spec.orig        2013-12-27 15:38:34.000000000 +0000
++++ cifs-utils.spec     2013-12-28 15:20:49.459045606 +0000
+@@ -92,7 +92,8 @@
+ necessary for building ID mapping plugins for cifs-utils.
+
+ %prep
+-%{?gpg_verify: %gpg_verify --keyring %{SOURCE6} %{SOURCE5}}
++
++
+ %setup -q
+
+ %build
+@@ -126,10 +127,15 @@
+        ${RPM_BUILD_ROOT}/var/run
+ install -m 0755 -p ${RPM_SOURCE_DIR}/cifs.init ${RPM_BUILD_ROOT}/%{_sysconfdir}/init.d/cifs
+ install -m 0600 -p ${RPM_SOURCE_DIR}/cifstab ${RPM_BUILD_ROOT}/%{_sysconfdir}/samba/cifstab
+-ln -s %{_sysconfdir}/init.d/${cifs_init_script} ${RPM_BUILD_ROOT}/%{_sbindir}/rccifs
++#
++
++cd  ${RPM_BUILD_ROOT}/%{_sbindir}
++%__ln_s %{_sysconfdir}/init.d/${cifs_init_script} rccifs
++cd /usr/src/packages/BUILD/%{name}-%{version}
+ touch ${RPM_BUILD_ROOT}/%{_sysconfdir}/sysconfig/%{NET_CFGDIR}/if-{down,up}.d/${script} \
+        ${RPM_BUILD_ROOT}/var/run/cifs
+ %endif
++
+ # Hardlink duplicate files
+ %if 0%{?suse_version} > 1110
+ %fdupes ${RPM_BUILD_ROOT}
