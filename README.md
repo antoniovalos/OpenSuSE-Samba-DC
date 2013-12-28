@@ -19,7 +19,7 @@ Samba 4.1 BUild
 -  AD enabled
 -  cups enabled
 -  syslog enabled
--  acl , attr , quotas, sys-quotas  enabled
+-  acl , attr , quotas, sys-quotas, xattr  enabled
 -  fam enabled
 -  ssl & tls enabled
 -  xfs vfs enabled
