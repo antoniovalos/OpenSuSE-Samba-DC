@@ -1,0 +1,17 @@
+
+OpenSuSE Works currently only on SAMBA without AD server support.
+This can be fund at :
+
+SRPMs:
+
+http://download.opensuse.org/repositories/network:/samba:/TESTING/openSUSE_Factory_ARM/src/
+
+http://download.opensuse.org/repositories/network:/samba:/TESTING/openSUSE_13.1/src/
+
+RPMs:
+
+http://download.opensuse.org/repositories/network:/samba:/TESTING/openSUSE_Factory_ARM/armv6hl/
+
+REPRO File:
+
+http://download.opensuse.org/repositories/network:/samba:/TESTING/openSUSE_13.1/network:samba:TESTING.repo
