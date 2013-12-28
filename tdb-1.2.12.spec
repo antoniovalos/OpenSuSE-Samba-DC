@@ -1,0 +1,437 @@
+#
+# spec file for package talloc
+#
+# Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
+%{!?python_sitearch:  %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+
+Name:           talloc
+%if 0%{?suse_version} == 0 || 0%{?suse_version} > 1140
+%define build_make_smp_mflags %{?_smp_mflags}
+%else
+%define build_make_smp_mflags %{?jobs:-j%jobs}
+%endif
+BuildRequires:  autoconf
+BuildRequires:  docbook-xsl-stylesheets
+BuildRequires:  doxygen
+%if 0%{?suse_version} > 1220
+BuildRequires:  gpg-offline
+%endif
+BuildRequires:  libxslt
+%if 0%{?suse_version} > 1020
+BuildRequires:  pkg-config
+%else
+BuildRequires:  pkgconfig
+%endif
+BuildRequires:  python-devel
+%if 0%{?suse_version} > 1100
+#!BuildIgnore:  python
+%endif
+Url:            http://talloc.samba.org/
+Version:        2.1.0
+Release:        oss13.1
+PreReq:         /sbin/ldconfig
+Summary:        Samba talloc Library
+License:        LGPL-3.0+
+Group:          System/Libraries
+Source:         http://download.samba.org/pub/talloc/talloc-%{version}.tar.gz
+Source1:        http://download.samba.org/pub/talloc/talloc-%{version}.tar.asc
+Source2:        samba-library-distribution-pubkey_13084025.asc
+Source4:        talloc.baselibs.conf
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+
+%description
+Talloc is a hierarchical, reference counted memory pool system with
+destructors.
+
+It is the core memory allocator used in Samba.
+
+
+%define libtalloc_name libtalloc2
+%package -n %{libtalloc_name}
+Summary:        Libraries and Header Files to Develop Programs with talloc2 Support
+Group:          System/Libraries
+Provides:       bundled(libreplace)
+
+%description -n %{libtalloc_name}
+Talloc is a hierarchical, reference counted memory pool system with
+destructors.
+
+It is the core memory allocator used in Samba.
+
+This package includes the talloc2 library.
+
+
+%package -n libtalloc-devel
+Summary:        Libraries and Header Files to Develop Programs with talloc2 Support
+Group:          Development/Libraries/C and C++
+Requires:       %{libtalloc_name} = %{version}
+
+%description -n libtalloc-devel
+Talloc is a hierarchical, reference counted memory pool system with
+destructors.
+
+It is the core memory allocator used in Samba.
+
+Libraries and Header Files to Develop Programs with talloc2 Support
+
+
+%package -n pytalloc
+Summary:        Python bindings for the Talloc library
+Group:          Development/Libraries/Python
+Requires:       %{libtalloc_name} = %{version}
+PreReq:         /sbin/ldconfig
+
+%description -n pytalloc
+This package contains the python bindings for the Talloc library.
+
+
+%package -n pytalloc-devel
+Summary:        Developer tools for the Talloc library
+Group:          Development/Libraries/Python
+Requires:       pytalloc = %{version}
+
+%description -n pytalloc-devel
+Libraries and Header Files to Develop Programs with pytalloc Support
+
+
+%prep
+%if 0%{?suse_version} > 1220
+gzip -dc %{SOURCE0} >${RPM_SOURCE_DIR}/%{name}-%{version}.tar
+rm ${RPM_SOURCE_DIR}/%{name}-%{version}.tar
+%endif
+%setup -n talloc-%{version} -q
+
+%build
+%if 0%{?suse_version} && 0%{?suse_version} < 911
+        OPTIMIZATION="-O"
+%else
+        # use the default optimization
+        unset OPTIMIZATION
+%endif
+export CFLAGS="${RPM_OPT_FLAGS} -D_GNU_SOURCE ${OPTIMIZATION} -D_LARGEFILE64_SOURCE -DIDMAP_RID_SUPPORT_TRUSTED_DOMAINS"
+CONFIGURE_OPTIONS="\
+        --prefix=%{_prefix} \
+        --libdir=%{_libdir} \
+        --disable-rpath \
+        --bundled-libraries=NONE \
+        --builtin-libraries=replace \
+"
+./configure ${CONFIGURE_OPTIONS}
+%{__make} %{build_make_smp_mflags} \
+        all
+doxygen doxy.config
+
+%check
+# make test doesn't work with --disable-rpath
+#%{__make} test
+
+%install
+DESTDIR=${RPM_BUILD_ROOT} make install
+
+%post -n %{libtalloc_name} -p /sbin/ldconfig
+
+%postun -n %{libtalloc_name} -p /sbin/ldconfig
+
+%post -n pytalloc -p /sbin/ldconfig
+
+%postun -n pytalloc -p /sbin/ldconfig
+
+%files -n %{libtalloc_name}
+%defattr(-,root,root)
+%{_libdir}/libtalloc.so.*
+
+%files -n libtalloc-devel
+%defattr(-,root,root)
+%{_includedir}/talloc.h
+%{_libdir}/libtalloc.so
+%{_libdir}/pkgconfig/talloc.pc
+%if 0%{?suse_version} == 0 || 0%{?suse_version} > 1100
+%{_mandir}/man3/talloc.3*
+%endif
+
+%files -n pytalloc
+%defattr(-,root,root)
+%{_libdir}/libpytalloc-util.so.*
+%{python_sitearch}/talloc.so
+
+%files -n pytalloc-devel
+%defattr(-,root,root,-)
+%{_includedir}/pytalloc.h
+%{_libdir}/pkgconfig/pytalloc-util.pc
+%{_libdir}/libpytalloc-util.so
+
+%changelog
+
+ad1:/srv/PROJ/samba4.1/BUILD/4.1.3 # cat talloc-2.1.0.spec^C
+ad1:/srv/PROJ/samba4.1/BUILD/4.1.3 # ls
+checksamba4-build.sh           installsamba-devel-4.1.5.sh  makesamba-rpm.sh     scp-installsamba-4.1.5_02.sh
+checksamba4-dependencyiesa.sh  installsamba-src-4.1.5.sh    samba-4.1.1_01.spec  talloc-2.1.0.spec
+cifs-utils.spec.diff           libbsd-0.6.spec              samba-4.1.5_01.spec  tdb-1.2.12.spec
+installsamba-4.1.5.sh          libntdb.spec                 samba-4.1.5_02.spec  tevent-0.9.20.spec
+installsamba-4.1.5_02.sh       makesamba-rpm-01.sh          samba-master
+ad1:/srv/PROJ/samba4.1/BUILD/4.1.3 # cat tdb-1.2.12.spec
+#
+# spec file for package tdb
+#
+# Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
+%{!?python_sitearch:  %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+
+Name:           tdb
+%if 0%{?suse_version} == 0 || 0%{?suse_version} > 1140
+%define build_make_smp_mflags %{?_smp_mflags}
+%else
+%define build_make_smp_mflags %{?jobs:-j%jobs}
+%endif
+BuildRequires:  autoconf
+BuildRequires:  docbook-xsl-stylesheets
+BuildRequires:  libxslt
+%if 0%{?suse_version} > 1020
+BuildRequires:  pkg-config
+%else
+BuildRequires:  pkgconfig
+%endif
+BuildRequires:  python-devel
+Url:            http://tdb.samba.org/
+Version:        1.2.12
+Release:        oss13.1
+Summary:        Samba Trivial Database
+License:        GPL-3.0+
+Group:          System/Libraries
+Source:         http://download.samba.org/pub/tdb/tdb-%{version}.tar.gz
+Source1:        http://download.samba.org/pub/tdb/tdb-%{version}.tar.asc
+Source4:        baselibs.conf
+Patch0:         ignore-tdb1-run-transaction-expand.diff
+Patch1:         build_pie.patch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+
+%description
+TDB is a Trivial Database. In concept, it is very much like GDBM, and BSD's DB
+except that it allows multiple simultaneous writers and uses locking
+internally to keep writers from trampling on each other. TDB is also extremely
+small.
+
+
+%define libtdb_name libtdb1
+%package -n %{libtdb_name}
+Summary:        Libraries and Header Files to Develop Programs with tdb1 Support
+Group:          System/Libraries
+%if 0%{?suse_version} > 1020
+Requires:       pkg-config
+%else
+Requires:       pkgconfig
+%endif
+PreReq:         /sbin/ldconfig
+
+%description -n %{libtdb_name}
+TDB is a Trivial Database. In concept, it is very much like GDBM, and BSD's DB
+except that it allows multiple simultaneous writers and uses locking
+internally to keep writers from trampling on each other. TDB is also extremely
+small.
+
+This package contains the tdb1 library.
+
+
+%package -n libtdb-devel
+Summary:        Libraries and Header Files to Develop Programs with tdb1 Support
+Group:          Development/Libraries/C and C++
+Requires:       %{libtdb_name} = %{version}
+%if 0%{?suse_version} > 1020
+Requires:       pkg-config
+%else
+Requires:       pkgconfig
+%endif
+
+%description -n libtdb-devel
+TDB is a Trivial Database. In concept, it is very much like GDBM, and BSD's DB
+except that it allows multiple simultaneous writers and uses locking
+internally to keep writers from trampling on each other. TDB is also extremely
+small.
+
+This package contains libraries and header files need for development.
+
+
+%package -n tdb-tools
+Summary:        Tools to manipulate tdb files
+Group:          Development/Libraries/C and C++
+
+%description -n tdb-tools
+TDB is a Trivial Database. In concept, it is very much like GDBM, and BSD's DB
+except that it allows multiple simultaneous writers and uses locking
+internally to keep writers from trampling on each other. TDB is also extremely
+small.
+
+This package contains tools to manage Tdb files.
+
+
+%package -n python-tdb
+Summary:        Python bindings for the Tdb library
+Group:          Development/Libraries/Python
+Requires:       %{libtdb_name} = %{version}
+PreReq:         /sbin/ldconfig
+
+%description -n python-tdb
+This package contains the python bindings for the Tdb library.
+
+
+%prep
+%setup -n tdb-%{version} -q
+%ifarch ppc ppc64
+%patch0 -p1
+%endif
+%patch1 -p1
+
+%build
+%if 0%{?suse_version} && 0%{?suse_version} < 911
+        OPTIMIZATION="-O"
+%else
+        # use the default optimization
+        unset OPTIMIZATION
+%endif
+export CFLAGS="${RPM_OPT_FLAGS} -D_GNU_SOURCE ${OPTIMIZATION} -D_LARGEFILE64_SOURCE -DIDMAP_RID_SUPPORT_TRUSTED_DOMAINS"
+CONFIGURE_OPTIONS="\
+        --prefix=%{_prefix} \
+        --libdir=%{_libdir} \
+        --disable-rpath \
+        --bundled-libraries=NONE \
+"
+./configure ${CONFIGURE_OPTIONS}
+%{__make} %{build_make_smp_mflags} \
+        all
+
+%check
+%if 0%{!?qemu_user_space_build:1}
+%{__make} test
+%endif
+
+%install
+DESTDIR=${RPM_BUILD_ROOT} make install
+
+%post -n %{libtdb_name} -p /sbin/ldconfig
+
+%postun -n %{libtdb_name} -p /sbin/ldconfig
+
+%post -n python-tdb -p /sbin/ldconfig
+
+%postun -n python-tdb -p /sbin/ldconfig
+
+%files -n %{libtdb_name}
+%defattr(-,root,root)
+%{_libdir}/libtdb.so.*
+
+%files -n libtdb-devel
+%defattr(-,root,root)
+%{_includedir}/tdb.h
+%{_libdir}/libtdb.so
+%{_libdir}/pkgconfig/tdb.pc
+
+%files -n tdb-tools
+%defattr(-,root,root)
+%{_bindir}/tdbbackup
+%{_bindir}/tdbdump
+%{_bindir}/tdbrestore
+%{_bindir}/tdbtool
+%if 0%{?suse_version} == 0 || 0%{?suse_version} > 1100
+%{_mandir}/man8/tdbbackup.8*
+%{_mandir}/man8/tdbdump.8*
+%{_mandir}/man8/tdbrestore.8*
+%{_mandir}/man8/tdbtool.8*
+%endif
+
+%files -n python-tdb
+%defattr(-,root,root,-)
+%{python_sitearch}/tdb.so
+
+%changelog
+* Thu Aug 29 2013 lmuelle@suse.com
+- PreReq /sbin/ldconfig from python-tdb.
+* Thu Aug 29 2013 lmuelle@suse.com
+- Add python-tdb to baselibs.conf.
+* Mon Jul 22 2013 lmuelle@suse.com
+- Don't package tdb tools man pages for pre-11.0 systems as they're not built
+  due to a missing docbook stylesheet.
+* Tue Jun  4 2013 lmuelle@suse.com
+- Update to version 1.2.12.
+  + internal code cleanups
+  + crash fix for pytdb
+  + fix for 4GB overflow detection
+* Mon Jan  7 2013 dvaleev@suse.com
+- Refresh ignore-tdb1-run-transaction-expand.diff patch.
+* Sun Dec  2 2012 lmuelle@suse.com
+- Update to version 1.2.11.
+  + Make tdb robust against improper CLEAR_IF_FIRST restart
+  + Make robust against shrinking tdbs
+  + add -e option to tdbdump (and docment it).
+  + tdbdump should log errors, and fail in that case.
+  + add tdb_rescue()
+  + Fix a typo
+  + return unpack error on strdup failure
+  + finish weaning off err.h.
+  + don't use err.h in tests.
+  + make TDB_NOSYNC merely disable sync.
+  + remove unused debug_fprintf() macro that breaks the build
+  + tests: fix use of a non-existent word (existant)
+* Sat Jul  7 2012 dvaleev@suse.com
+- Ignore tdb run transaction expand check on ppc as well; (bnc#769268).
+* Thu Jun 28 2012 lmuelle@suse.com
+- Ignore tdb run transaction expand check on ppc64; (bnc#769268).
+* Thu Jun 21 2012 adrian@suse.de
+- disable test suite on qemu emulated builds
+* Wed Jun 13 2012 ddiss@suse.com
+- Build and link binaries with PIE flags.
+* Tue Jun  5 2012 lmuelle@suse.com
+- Remove superfluous tdb-tools rpmlintrc; (bnc#765476).
+* Sun Jun  3 2012 lmuelle@suse.com
+- Define library name and use it instead of libtdb1.
+* Sat Jun  2 2012 lmuelle@suse.com
+- Add tdb tar ball gpg signature as source.
+* Sat Jun  2 2012 lmuelle@suse.com
+- Rename package to tdb and add an independent libtdb1 subpackage.
+- Rename rpmlintrc file from libtdb1 to tdb-tools.
+- Remove bogus requires to itself from libtdb1 package.
+* Thu May 31 2012 lmuelle@suse.com
+- BuildRequire pkg-config for post-10.2 systems and else pkgconfig.
+* Thu May 31 2012 lmuelle@suse.com
+- Rename libtdb1-devel to libtdb-devel.
+* Wed May 30 2012 lmuelle@suse.com
+- Define python_sitearch if undefined.
+* Wed May 30 2012 lmuelle@suse.com
+- Remove superfluous AutoReqProv on line.
+* Wed May 16 2012 lmuelle@suse.com
+- Require pkg-config from the devel package.
+* Wed May 16 2012 lmuelle@suse.com
+- Move python file to python-tdb subpackage.
+- Build and add tdbbackup, tdbdump, tdbrestore, and tdbtool man pages.
+* Wed May 16 2012 lmuelle@suse.com
+- Cleanup BuildRequires.
+- Polish package descriptions.
+- Add rpmlintrc file to set badness for non PIE code to 0.
+* Wed Sep  7 2011 lars@samba.org
+- Initial independent libtdb1 package.
