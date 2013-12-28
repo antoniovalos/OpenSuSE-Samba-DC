@@ -90,5 +90,5 @@ rm -f %buildroot%_libdir/*.a
 %python_sitelibdir/ntdb.so
 
 %changelog
-Sat Dec 28 2013 - Horst venzke - info@remsnet.de - 0.1
+* Sat Dec 28 2013 - Horst venzke - info@remsnet.de - 0.1
 - initial samba NTDB 0.1 build for  OpenSuSE 13.1
