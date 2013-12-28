@@ -43,7 +43,7 @@ License:        LGPL-3.0+
 Group:          System/Libraries
 Url:            http://tevent.samba.org/
 Version:        0.9.20
-Release:        0
+Release:        oss13.1
 Summary:        An event system based on the talloc memory management library
 Source:         http://download.samba.org/pub/tevent/tevent-%{version}.tar.gz
 Source4:        baselibs.conf
