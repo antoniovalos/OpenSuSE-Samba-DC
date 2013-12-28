@@ -1,0 +1,177 @@
+#
+# spec file for package talloc
+#
+# Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
+%{!?python_sitearch:  %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+
+Name:           talloc
+%if 0%{?suse_version} == 0 || 0%{?suse_version} > 1140
+%define build_make_smp_mflags %{?_smp_mflags}
+%else
+%define build_make_smp_mflags %{?jobs:-j%jobs}
+%endif
+BuildRequires:  autoconf
+BuildRequires:  docbook-xsl-stylesheets
+BuildRequires:  doxygen
+%if 0%{?suse_version} > 1220
+BuildRequires:  gpg-offline
+%endif
+BuildRequires:  libxslt
+%if 0%{?suse_version} > 1020
+BuildRequires:  pkg-config
+%else
+BuildRequires:  pkgconfig
+%endif
+BuildRequires:  python-devel
+%if 0%{?suse_version} > 1100
+#!BuildIgnore:  python
+%endif
+Url:            http://talloc.samba.org/
+Version:        2.1.0
+Release:        oss13.1
+PreReq:         /sbin/ldconfig
+Summary:        Samba talloc Library
+License:        LGPL-3.0+
+Group:          System/Libraries
+Source:         http://download.samba.org/pub/talloc/talloc-%{version}.tar.gz
+Source1:        http://download.samba.org/pub/talloc/talloc-%{version}.tar.asc
+Source2:        samba-library-distribution-pubkey_13084025.asc
+Source4:        talloc.baselibs.conf
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+
+%description
+Talloc is a hierarchical, reference counted memory pool system with
+destructors.
+
+It is the core memory allocator used in Samba.
+
+
+%define libtalloc_name libtalloc2
+%package -n %{libtalloc_name}
+Summary:        Libraries and Header Files to Develop Programs with talloc2 Support
+Group:          System/Libraries
+Provides:       bundled(libreplace)
+
+%description -n %{libtalloc_name}
+Talloc is a hierarchical, reference counted memory pool system with
+destructors.
+
+It is the core memory allocator used in Samba.
+
+This package includes the talloc2 library.
+
+
+%package -n libtalloc-devel
+Summary:        Libraries and Header Files to Develop Programs with talloc2 Support
+Group:          Development/Libraries/C and C++
+Requires:       %{libtalloc_name} = %{version}
+
+%description -n libtalloc-devel
+Talloc is a hierarchical, reference counted memory pool system with
+destructors.
+
+It is the core memory allocator used in Samba.
+
+Libraries and Header Files to Develop Programs with talloc2 Support
+
+
+%package -n pytalloc
+Summary:        Python bindings for the Talloc library
+Group:          Development/Libraries/Python
+Requires:       %{libtalloc_name} = %{version}
+PreReq:         /sbin/ldconfig
+
+%description -n pytalloc
+This package contains the python bindings for the Talloc library.
+
+
+%package -n pytalloc-devel
+Summary:        Developer tools for the Talloc library
+Group:          Development/Libraries/Python
+Requires:       pytalloc = %{version}
+
+%description -n pytalloc-devel
+Libraries and Header Files to Develop Programs with pytalloc Support
+
+
+%prep
+%if 0%{?suse_version} > 1220
+gzip -dc %{SOURCE0} >${RPM_SOURCE_DIR}/%{name}-%{version}.tar
+rm ${RPM_SOURCE_DIR}/%{name}-%{version}.tar
+%endif
+%setup -n talloc-%{version} -q
+
+%build
+%if 0%{?suse_version} && 0%{?suse_version} < 911
+        OPTIMIZATION="-O"
+%else
+        # use the default optimization
+        unset OPTIMIZATION
+%endif
+export CFLAGS="${RPM_OPT_FLAGS} -D_GNU_SOURCE ${OPTIMIZATION} -D_LARGEFILE64_SOURCE -DIDMAP_RID_SUPPORT_TRUSTED_DOMAINS"
+CONFIGURE_OPTIONS="\
+        --prefix=%{_prefix} \
+        --libdir=%{_libdir} \
+        --disable-rpath \
+        --bundled-libraries=NONE \
+        --builtin-libraries=replace \
+"
+./configure ${CONFIGURE_OPTIONS}
+%{__make} %{build_make_smp_mflags} \
+        all
+doxygen doxy.config
+
+%check
+# make test doesn't work with --disable-rpath
+#%{__make} test
+
+%install
+DESTDIR=${RPM_BUILD_ROOT} make install
+
+%post -n %{libtalloc_name} -p /sbin/ldconfig
+
+%postun -n %{libtalloc_name} -p /sbin/ldconfig
+
+%post -n pytalloc -p /sbin/ldconfig
+
+%postun -n pytalloc -p /sbin/ldconfig
+
+%files -n %{libtalloc_name}
+%defattr(-,root,root)
+%{_libdir}/libtalloc.so.*
+
+%files -n libtalloc-devel
+%defattr(-,root,root)
+%{_includedir}/talloc.h
+%{_libdir}/libtalloc.so
+%{_libdir}/pkgconfig/talloc.pc
+%if 0%{?suse_version} == 0 || 0%{?suse_version} > 1100
+%{_mandir}/man3/talloc.3*
+%endif
+
+%files -n pytalloc
+%defattr(-,root,root)
+%{_libdir}/libpytalloc-util.so.*
+%{python_sitearch}/talloc.so
+
+%files -n pytalloc-devel
+%defattr(-,root,root,-)
+%{_includedir}/pytalloc.h
+%{_libdir}/pkgconfig/pytalloc-util.pc
+%{_libdir}/libpytalloc-util.so
+
+%changelog
