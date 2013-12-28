@@ -1,4 +1,3 @@
-
 -------------samba 4.1 AD on opensuse RPI - STEP 05 : prepare depend samba - libbsd-------------------
 
 
@@ -20,4 +19,4 @@ copy libbsd-0.6.0.tar.xz
 rpmbuild -ba libbsd.spec
 
 install it after :
-rpm -i /usr/src/packages/RPMS/armv6hl/libbsd0-0.6.0-0.armv6hl.rpm
+rpm -i /usr/src/packages/RPMS/armv6hl/libbsd0-0.6.0-0.armv6hl.rpm /usr/src/packages/RPMS/armv6hl/libbsd-devel-0.6.0-0.armv6hl.rpm
