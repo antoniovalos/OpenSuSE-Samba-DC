@@ -1,32 +1,32 @@
 samba-dc-opensuse-RPi
 =====================
 
-Build Files and Notice for Samba  AS   RPMBuild on RPi 
 
+Build Notices for Samba-DC    
+RPMBuild on RPi 
 Work License : GPL v2, see file "LICENSE"
 
 
-Samba 4.1 BUild 
+Samba-DC 4.x BUild 
 
 - Opensuse Compliant style Build with subpackages.
--  Mit KRB enabled
--  gnutls, SSL enabled
--  Bind9  DLZ 
--  Ldap , ldapsam enabled
+-  MIT KRB enabled
+-  gnutls, SSL  enabled
+-  Bind9  DLZ enabled
+-  Ldap, ldapsam enabled
 -  AD enabled
 -  cups enabled
 -  syslog enabled
 -  acl , attr , quotas, sys-quotas, xattr  enabled
 -  fam enabled
--  ssl & tls enabled
--  xfs vfs enabled
+-  xfs, ext2/3/4 vfs enabled
 -  winbind enabled
--  clustering NOT enbabled - we plan an AD 
+-  clustering NOT  enabled - we plan an AD 
 -  NDR enabled
 -  selfbuild enabled : tdb , ntdb, tevent,  talloc, ldb , libbsd, python-hashlib
    that include all develfiles  *.h / *.a to avoid Build Issues with Samba 4.1 and / or Missing feagers
 
-- we use OpenSUSE selfupdated ibraries, 
+- allmost selfupdated Packages based on OpenSuSE.org ´s (S)RMS 
   thus the folowing are exclude use of the      --bundled-libraries=!heimdal,\
   !popt,!zlib, !ldb,!pyldb,!talloc,!pytalloc,!pytalloc-util, !tdb,!pytdb,!tevent,!pytevent \
 
