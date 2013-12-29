@@ -1,5 +1,5 @@
 #
-# spec file for package ldb
+# spec file for package samba-dc ldb
 #
 # Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -12,7 +12,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#  Please submit bugfixes or comments via https://github.com/remsnet/samba-dc-opensuse-RPi
 #
 
 
