@@ -357,6 +357,9 @@ libpwquality-tools
 libpwquality-lang 
 libpwquality1
 
+glusterfs 
+glusterfs-devel
+
 
 
 samba 4.1 AD on opensuse RPI - STEP 03_05 : prepare depend samba perl  , installs
