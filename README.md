@@ -23,7 +23,7 @@ Samba 4.1 BUild
 -  winbind enabled
 -  clustering NOT enbabled - we plan an AD 
 -  NDR enabled
--  selfbuild enabaled : tdb , ntdb, tevent,  talloc, ldb 
+-  selfbuild enabled : tdb , ntdb, tevent,  talloc, ldb , libbsd, python-hashlib
    that include all develfiles  *.h / *.a to avoid Build Issues with Samba 4.1 and / or Missing feagers
 
 - we use OpenSUSE selfupdated ibraries, 
