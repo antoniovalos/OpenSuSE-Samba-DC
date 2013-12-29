@@ -14,6 +14,6 @@
 CPPFLAGS="-Ofast -mfpu=vfp -march=armv6zk -mtune=arm1176jzf-s"
 CFLAGS="-Ofast -mfpu=vfp -march=armv6zk -mtune=arm1176jzf-s"
 
-cd /srv/PROJ/samba4.1/BUILD/4.1.5
+cd /srv/PROJ/samba4.1/BUILD/4.1.3
 
 nohup rpmbuild -ba samba-4.1.3_01.spec &
