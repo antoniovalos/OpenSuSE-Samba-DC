@@ -1,12 +1,14 @@
 #
 # Remsnet  Spec file for package ntdb  (Version 1.00)
 #
-# Copyright (c) 1995-2008 Remsnet Netzwerk Service OhG , D7-3630 Remshalden
+# Copyright (c) 1995-2008 Remsnet Netzwerk Service OhG , D-73630 Remshalden
 # Copyright (c) 2008-2014 Remsnet Consullting & Internet Services LTD , D-40476 Duesseldorf
 
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
+# Please submit bugfixes or comments via https://github.com/remsnet/samba-dc-opensuse-RPi
+
 %{!?python_sitearch:  %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 #
