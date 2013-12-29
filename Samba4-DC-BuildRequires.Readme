@@ -1,5 +1,4 @@
 
-
 samba 4.1 AD on opensuse RPI - STEP 03_00 : prepare depend OSS software requirements 
 ---------------------------------
 
@@ -345,6 +344,14 @@ python3-gobject-cairo-3.10.1-1.1.armv6hl
 python-pycparser-2.10-2.1.1
 python-pycparser-2.10-2.1.1
 python-cffi-0.7.2-2.2.1
+
+as well some extra sofwtare required to enable protocoll Samba4 feathers
+
+gnu-inetlib-1.1-246.1.1
+tcpd-devel-7.6-881.1.4.armv6hl.rpm
+libsensors4-devel-3.3.4-3.1.1.armv6hl.rpm
+net-snmp-python-5.7.2-9.1.1.armv6hl.rpm
+net-snmp-devel-5.7.2-9.1.1.armv6hl.rpm
 
 
 samba 4.1 AD on opensuse RPI - STEP 03_05 : prepare depend samba perl  , installs
