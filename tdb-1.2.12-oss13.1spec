@@ -1,5 +1,5 @@
 #
-# spec file for package talloc
+# spec file for package  samba-dc talloc
 #
 # Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -12,8 +12,9 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
+# Please submit bugfixes or comments via https://github.com/remsnet/samba-dc-opensuse-RPi
+
 
 
 %{!?python_sitearch:  %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
