@@ -1,4 +1,3 @@
-
 samba 4.1 AD on opensuse RPI - STEP 03_00 : prepare depend OSS software requirements 
 ---------------------------------
 
@@ -352,6 +351,8 @@ tcpd-devel-7.6-881.1.4.armv6hl.rpm
 libsensors4-devel-3.3.4-3.1.1.armv6hl.rpm
 net-snmp-python-5.7.2-9.1.1.armv6hl.rpm
 net-snmp-devel-5.7.2-9.1.1.armv6hl.rpm
+
+
 
 
 samba 4.1 AD on opensuse RPI - STEP 03_05 : prepare depend samba perl  , installs
