@@ -1,5 +1,5 @@
 #
-# spec file for package tevent (Version 0.9.15)
+# spec file for package samba-dc tevent (Version 2.1.0)
 #
 # Copyright (c) 2012 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -12,7 +12,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://github.com/remsnet/samba-dc-opensuse-RPi
 #
 
 # norootforbuild
