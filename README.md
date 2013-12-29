@@ -3,10 +3,7 @@ samba-dc-opensuse-RPi
 
 Build Files and Notice for Samba  AS   RPMBuild on RPi 
 
-Work License : GPL v2
-
-
-samba 4.1 AD on opensuse RPI - STEP 01
+Work License : GPL v2, see file "LICENSE"
 
 
 Samba 4.1 BUild 
@@ -25,7 +22,7 @@ Samba 4.1 BUild
 -  xfs vfs enabled
 -  winbind enabled
 -  clustering NOT enbabled - we plan an AD 
-- NDR enabled
+-  NDR enabled
 -  selfbuild enabaled : tdb , ntdb, tevent,  talloc, ldb 
    that include all develfiles  *.h / *.a to avoid Build Issues with Samba 4.1 and / or Missing feagers
 
@@ -34,9 +31,15 @@ Samba 4.1 BUild
   !popt,!zlib, !ldb,!pyldb,!talloc,!pytalloc,!pytalloc-util, !tdb,!pytdb,!tevent,!pytevent \
 
 
+ SAMBA4-DC  BUild require a LOT of Software on the BUILD HOST to get the MOST IMPressive SAMBA featgers BUILD-IN 
+ BUILD / Compile preparation will take a while.
 
 
-SAMBA4 BUild require a LOT of Software on the BUILD HOST to get the MOST IMPERSIVE SAMBA featgers BUILD-IN 
-BUILD / Compile preparation will take a while.
+To Prerepare yourself :
 
-see the Samba4-DC Readme files.
+ 1- Install any system depend software include Compiler, devel libs - see the Samba4-DC*  Readme files.
+
+ 2- Install tdb , ldb ,. ntdb , tevent , talloc, libbsd, python-hashlib
+
+ 3- build samba-dc
+ 
