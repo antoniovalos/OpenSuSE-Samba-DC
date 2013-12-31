@@ -39,7 +39,10 @@ To Prerepare yourself :
 
  1- Install any system depend software include Compiler, devel libs - see the Samba4-DC*  Readme files.
 
- 2- Install tdb , ldb ,. ntdb , tevent , talloc, libbsd, python-hashlib
+ 2- Build & Install tdb , ldb ,. ntdb , tevent , talloc, libbsd, python-hashlib
 
- 3- build samba-dc
+ 3- build samba-dc  - see latest samba-dc-4.1.3_??.spec
  
+ 4- install samba-dc rpms
+ 
+ 5- setup samba-dc with dcpromo
