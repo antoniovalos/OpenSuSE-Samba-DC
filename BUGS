@@ -8,7 +8,7 @@ BUG´s with MIT-KRB5 :                               timestamp : 02-01-2014
 Uppon done chat & mails with Samba folkes they expect that MIT KRB5 will not been ready for Samba ADS bevor 2016 
 as the BUG / featgter List  to get MIT-KRB5 up and running with Samba-ads SERVER are highly LONG. 
 
-MIT-KRB5 works  as ads Client , but not server currently.
+MIT-KRB5 works  as ADS  Client( domain jojn OK ) , but not as DAS DC Server currently..
 
 
 
