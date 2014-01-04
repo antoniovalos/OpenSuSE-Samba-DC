@@ -27,12 +27,15 @@ Samba-DC 4.x BUild
    that include all develfiles  *.h / *.a to avoid Build Issues with Samba 4.1 and / or Missing feagers
 
 - allmost selfupdated Packages based on OpenSuSE.org ´s (S)RMS 
-  thus the folowing are exclude use of the      --bundled-libraries=!heimdal,\
-  !popt,!zlib, !ldb,!pyldb,!talloc,!pytalloc,!pytalloc-util, !tdb,!pytdb,!tevent,!pytevent \
+  thus the folowing are exclude use of the      --bundled-libraries=!popt,!zlib, !ldb,!pyldb,!talloc,!pytalloc,!pytalloc-util,tdb,!pytdb,!tevent,!pytevent,ALL \
 
 
  SAMBA4-DC  BUild require a LOT of Software on the BUILD HOST to get the MOST IMPressive SAMBA featgers BUILD-IN 
  BUILD / Compile preparation will take a while.
+
+   SAMBA4-DC  BUild as ADS works only with Bundeld heimdal libary currently due MIT-KRB5 lacks some featgers that ADS require.
+  https://wiki.samba.org/index.php/MIT_Build#Kerberos_support
+  http://k5wiki.kerberos.org/wiki/Task-List_for_Samba4_Port_%28Andrew_Bartlett%29#Implicit_names_for_Win2000_Accounts
 
 
 To Prerepare yourself :
