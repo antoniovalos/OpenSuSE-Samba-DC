@@ -1,9 +1,18 @@
+BUG´s with MIT-KRB5 :                               timestamp : 02-01-2014
+---------------------
 
-MIT-KRB5 :
-
-# samba-dc works only with Bundeld heimdal libary currently due MIT-KRB5 lacks some featgers that ADS require.
+# samba-dc works only with Bundeld heimdal libary currently due MIT-KRB5 lacks sme featgers that ADS require.
 # https://wiki.samba.org/index.php/MIT_Build#Kerberos_support
 # http://k5wiki.kerberos.org/wiki/Task-List_for_Samba4_Port_%28Andrew_Bartlett%29#Implicit_names_for_Win2000_Accounts
 
+Uppon done chat & mails with Samba folkes the expect that MIT KRB5 will not been ready for Samba ADS bevor 2016 
+as the BUG / featgter List  are highly LONG. 
 
-samba NTDB from GIT 
+
+samba NTDB 
+-----------
+
+NTDB from GIT  currently (jan2014 )not build as system-build-ntdb the required libntdb_util.so 
+Comparing the samba-4.1.3 ´s NTDB(0.9) with the officialy NTDB (~1.0):
+ntdb.h and libs found , but linking failed due required libary missed as not build.
+Bug report has been send to samba-technical list.
