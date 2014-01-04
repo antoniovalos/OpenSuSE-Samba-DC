@@ -1,0 +1,9 @@
+
+MIT-KRB5 :
+
+# samba-dc works only with Bundeld heimdal libary currently due MIT-KRB5 lacks some featgers that ADS require.
+# https://wiki.samba.org/index.php/MIT_Build#Kerberos_support
+# http://k5wiki.kerberos.org/wiki/Task-List_for_Samba4_Port_%28Andrew_Bartlett%29#Implicit_names_for_Win2000_Accounts
+
+
+samba NTDB from GIT 
