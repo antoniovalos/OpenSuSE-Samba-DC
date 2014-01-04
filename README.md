@@ -10,7 +10,7 @@ Work License : GPL v2, see file "LICENSE"
 Samba-DC 4.x BUild 
 
 - Opensuse Compliant style Build with subpackages.
--  Heimdall embeded enabled
+-  Heimdall embeded enabled due requirement for ADS DC Build 
 -  gnutls, SSL  enabled
 -  Bind9  DLZ enabled
 -  Ldap, ldapsam enabled
