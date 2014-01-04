@@ -33,9 +33,7 @@ Samba-DC 4.x BUild
  SAMBA4-DC  BUild require a LOT of Software on the BUILD HOST to get the MOST IMPressive SAMBA featgers BUILD-IN 
  BUILD / Compile preparation will take a while.
 
-   SAMBA4-DC  BUild as ADS works only with Bundeld heimdal libary currently due MIT-KRB5 lacks some featgers that ADS require.
-  https://wiki.samba.org/index.php/MIT_Build#Kerberos_support
-  http://k5wiki.kerberos.org/wiki/Task-List_for_Samba4_Port_%28Andrew_Bartlett%29#Implicit_names_for_Win2000_Accounts
+   SAMBA4-DC  BUild as ADS works only with Bundeld heimdal - see BUGS File.
 
 
 To Prerepare yourself :
