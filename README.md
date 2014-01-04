@@ -10,7 +10,7 @@ Work License : GPL v2, see file "LICENSE"
 Samba-DC 4.x BUild 
 
 - Opensuse Compliant style Build with subpackages.
--  Heimdall  KRB enabled
+-  Heimdall embeded enabled
 -  gnutls, SSL  enabled
 -  Bind9  DLZ enabled
 -  Ldap, ldapsam enabled
