@@ -19,3 +19,21 @@ NTDB from GIT  currently (jan2014 )not build as system-build-ntdb the required l
 Comparing the samba-4.1.3 ´s NTDB(0.9) with the officialy NTDB (~1.0):
 ntdb.h and libs found , but linking failed due required libary missed as not build.
 Bug report has been send to samba-technical list.
+
+
+GOSA(v1/v2) / Gosa-NG(v3)
+--------
+
+Current Gosa releases are known not able to manage Samba ADS
+
+Gosa-NG maybe will never reach Stable as OpenSource Contrubutiers moved to an Free Opensoure Fork.
+see http://www.techworld.com.au/article/382193/open_source_fusiondirectory_forked_from_gosa_project/
+
+
+-----
+fusiondirectory 
+
+Fusiondirectory v1.07 reached stable state .
+Fusiondirectory not Yet work with Samba ads .
+
+Fusiondirectory team work currently to get heimdall + samba4 to work soon.
