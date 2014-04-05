@@ -63,7 +63,10 @@ To Prerepare yourself : <br>
  krb51.11.4                                        : completed <br>
  
  RPMS , SRPM Files   of this Samba4-DC Build  are stored on Our Drop box url :  <br>
- https://www.dropbox.com/home/RPI-Samba-DC/Samba4.2-betta%20%28%20build%204.1.6-22%29 <br>
+ 
+Current of this Samba4-DC Build  are stored on Our Drop box url : https://www.dropbox.com/sh/p4ijdacy90xebqk/4moyZY9Ne8
+Currently RPMS are created for : 
+ -  OSS 13.1 arm 
  
  
  <pre>
@@ -97,12 +100,7 @@ To Prerepare yourself : <br>
 </pre>
  
  
- 
-Current of this Samba4-DC Build  are stored on Our Drop box url : https://www.dropbox.com/sh/p4ijdacy90xebqk/4moyZY9Ne8
 
-
-Currently RPMS are created for : 
- -  OSS 13.1 arm 
 
 
  
