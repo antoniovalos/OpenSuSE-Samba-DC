@@ -24,49 +24,46 @@ Samba-DC 4.x BUild
 -  clustering NOT  enabled - we plan an AD 
 -  NDR enabled
 -  selfbuild enabled : tdb ,  tevent,  talloc, ldb , libbsd, python-hashlib
-   that include all develfiles  *.h / *.a to avoid Build Issues with Samba 4.1 and / or Missing feagers
+   that include all develfiles  *.h / *.a to avoid Build Issues with Samba 4.1 and / or Missing feagers<br>
 
-- allmost selfupdated Packages based on OpenSuSE.org ´s (S)RMS 
-  thus the folowing are exclude use of the      --bundled-libraries=!popt,!zlib, !ldb,!pyldb,!talloc,!pytalloc,!pytalloc-util,tdb,!pytdb,!tevent,!pytevent,ALL \
+- allmost selfupdated Packages based on OpenSuSE.org ´s (S)RMS <br>
+  thus the folowing are exclude use of the      --bundled-libraries=!popt,!zlib, <br> !ldb,!pyldb,!talloc,!pytalloc,!pytalloc-util,tdb,!pytdb,!tevent,!pytevent,ALL \ <br>
 
 
- SAMBA4-DC  BUild require a LOT of Software on the BUILD HOST to get the MOST IMPressive SAMBA featgers BUILD-IN 
- BUILD / Compile preparation will take a while.
+ SAMBA4-DC  BUild require a LOT of Software on the BUILD HOST to get the MOST IMPressive SAMBA featgers BUILD-IN  <br>
+ BUILD / Compile preparation will take a while. <br>
 
-   SAMBA4-DC  BUild as ADS works only with Bundeld heimdal - see BUGS File.
+   SAMBA4-DC  BUild as ADS works only with Bundeld heimdal - see BUGS File. <br>
 
 
 To Prerepare yourself : <br>
 
  1- Install any system depend software include Compiler, devel libs - see the Samba4-DC*  Readme files.
-
  2- Build & Install tdb , ldb ,. ntdb , tevent , talloc, libbsd, python-hashlib
-
  3- build samba-dc  - see latest samba-dc-4.1.3_??.spec
- 
  4- install samba-dc rpms
- 
  5- setup samba-dc with dcpromo
  
  
  
- RPM Build changelog 05-03-2014
- samba 4.2-betta ( 4.1.6-23 rpmbuild from GIT )    : Completed
+ RPM Build changelog 05-03-2014 <br>
+ samba 4.2-betta ( 4.1.6-23 rpmbuild from GIT )    : Completed <br>
  
- depend Samba4  AD Software
- bind9  with dlz                                   : Completed
- talloc 2.1                                        : completed
- tdb 1.2.12                                        : Completed
- tevent 0.9.20                                     : completed
- ldb 1.1.6                                         : completed
- ntdb 1.0                                          : samba4.2 build-in
- libbds 0.6                                        : completed
- cifs-utils                                        : completed
- python-hashlib                                   : completed
- heimdall 1.3.2                                    : completed
- krb51.11.4                                        : completed
+ depend Samba4  AD Software <br>
+ bind9  with dlz                                   : Completed <br>
+ talloc 2.1                                        : completed <br>
+ tdb 1.2.12                                        : Completed <br>
+ tevent 0.9.20                                     : completed <br>
+ ldb 1.1.6                                         : completed <br>
+ ntdb 1.0                                          : samba4.2 build-in <br>
+ libbds 0.6                                        : completed <br>
+ cifs-utils                                        : completed <br>
+ python-hashlib                                   : completed <br>
+ heimdall 1.3.2                                    : completed <br>
+ krb51.11.4                                        : completed <br>
  
- RPMS , SRPM Files   of this Samba4-DC Build  are stored on Our Drop box url : 
+ RPMS , SRPM Files   of this Samba4-DC Build  are stored on Our Drop box url :  <br>
+ https://www.dropbox.com/home/RPI-Samba-DC/Samba4.2-betta%20%28%20build%204.1.6-22%29 <br>
  
  
  <pre>
