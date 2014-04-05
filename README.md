@@ -4,17 +4,17 @@ samba-dc-opensuse-RPi
 
 Build Notices for Samba-DC    
 RPMBuild on RPi 
-Work License : GPL v2, see file "LICENSE"
-
+Work License : GPL v2, see file "LICENSE"<br>
+<br>
 
 Samba-DC 4.x BUild 
 
-- Opensuse Compliant style Build with subpackages.
--  Heimdall embeded enabled due requirement for ADS DC Build 
--  gnutls, SSL  enabled
--  Bind9  DLZ enabled
--  Ldap, ldapsam enabled
--  AD enabled
+- Opensuse Compliant style Build with subpackages.<br>
+-  Heimdall embeded enabled due requirement for ADS DC Build <br>
+-  gnutls, SSL  enabled<br>
+-  Bind9  DLZ enabled<br>
+-  Ldap, ldapsam enabled<br>
+-  AD enabled<br>
 -  cups enabled
 -  syslog enabled
 -  acl , attr , quotas, sys-quotas, xattr  enabled
@@ -36,7 +36,7 @@ Samba-DC 4.x BUild
    SAMBA4-DC  BUild as ADS works only with Bundeld heimdal - see BUGS File.
 
 
-To Prerepare yourself :
+To Prerepare yourself : <br>
 
  1- Install any system depend software include Compiler, devel libs - see the Samba4-DC*  Readme files.
 
@@ -47,3 +47,67 @@ To Prerepare yourself :
  4- install samba-dc rpms
  
  5- setup samba-dc with dcpromo
+ 
+ 
+ 
+ RPM Build changelog 05-03-2014
+ samba 4.2-betta ( 4.1.6-23 rpmbuild from GIT )    : Completed
+ 
+ depend Samba4  AD Software
+ bind9  with dlz                                   : Completed
+ talloc 2.1                                        : completed
+ tdb 1.2.12                                        : Completed
+ tevent 0.9.20                                     : completed
+ ldb 1.1.6                                         : completed
+ ntdb 1.0                                          : samba4.2 build-in
+ libbds 0.6                                        : completed
+ cifs-utils                                        : completed
+ python-hashlib                                   : completed
+ heimdall 1.3.2                                    : completed
+ krb51.11.4                                        : completed
+ 
+ RPMS , SRPM Files   of this Samba4-DC Build  are stored on Our Drop box url : 
+ 
+ 
+ <pre>
+ samba4-4.1.6-DC_master_r22.src.rpm
+ samba4-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-client-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-man-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-common-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-dc-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-dc-libs-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-dc-doc-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-dc-config-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-devel-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-libs-4.1.6-DC_master_r22.armv6hl.rpm
+ libsmbclient0-4.1.6-DC_master_r22.armv6hl.rpm
+ libsmbclient-devel-4.1.6-DC_master_r22.armv6hl.rpm
+ libsmbclient-raw0-4.1.6-DC_master_r22.armv6hl.rpm
+ libsmbclient-raw-devel-4.1.6-DC_master_r22.armv6hl.rpm
+ libwbclient0-4.1.6-DC_master_r22.armv6hl.rpm
+ libwbclient-devel-4.1.6-DC_master_r22.armv6hl.rpm
+ libsmbsharemodes0-4.1.6-DC_master_r22.armv6hl.rpm
+ libsmbsharemodes-devel-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-python-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-pidl-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-test-4.1.6-DC_master_r22.armv6hl.rpm
+ samba4-test-devel-4.1.6-DC_master_r22.armv6hl.rpm
+ winbind-4.1.6-DC_master_r22.armv6hl.rpm
+ winbind-clients-4.1.6-DC_master_r22.armv6hl.rpm
+ winbind-krb5-locator-4.1.6-DC_master_r22.armv6hl.rpm
+ winbind-modules-4.1.6-DC_master_r22.armv6hl.rpm
+</pre>
+ 
+ 
+ 
+Current of this Samba4-DC Build  are stored on Our Drop box url : https://www.dropbox.com/sh/p4ijdacy90xebqk/4moyZY9Ne8
+
+
+Currently RPMS are created for : 
+ -  OSS 13.1 arm 
+
+
+ 
+ For Build issues raise an issue - please.
+ 
