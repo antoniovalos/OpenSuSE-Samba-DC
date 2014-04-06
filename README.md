@@ -1,4 +1,5 @@
-samba-dc-opensuse-RPi
+ OpenSuSE-Samba-DC
+
 =====================
 
 
