@@ -276,8 +276,7 @@ CONFIGURE_OPTIONS="\
         --with-dlz-ldap  \
         --enable-filter-aaaa \
         --enable-rrl \
-        --with-ecdsa \
-        --disable-isc-spnego
+        --with-ecdsa 
 
 "
 cp -f -p config.guess config.sub contrib/idn/idnkit-1.0-src/
